@@ -34,7 +34,7 @@ class SwiftMailer extends BaseSwiftMailer implements MailProviderPluginInterface
             ->addTo($mailTransfer)
             ->addContent($mailTransfer);
 
-        if ($bcc !== null) {
+        if (filter_var($bcc, \FILTER_VALIDATE_EMAIL)) {
             $this->addBcc($bcc);
         }
 
