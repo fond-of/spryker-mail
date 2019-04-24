@@ -7,6 +7,9 @@ use FondOfSpryker\Zed\Mail\Business\Model\Provider\SwiftMailer;
 use Pyz\Zed\Mail\MailDependencyProvider;
 use Spryker\Zed\Mail\Business\MailBusinessFactory as BaseMailBusinessFactory;
 
+/**
+ * @method \FondOfSpryker\Zed\Mail\MailConfig getConfig()
+ */
 class MailBusinessFactory extends BaseMailBusinessFactory
 {
     /**

@@ -9,9 +9,9 @@ interface MailHandlerInterface extends BaseMailHandlerInterface
 {
     /**
      * @param \Generated\Shared\Transfer\MailTransfer $mailTransfer
-     * @param string|null $bcc
+     * @param array|null $bcc
      *
-     * @return mixed
+     * @return void
      */
-    public function handleMailWithBcc(MailTransfer $mailTransfer, ?string $bcc);
+    public function handleMailWithBcc(MailTransfer $mailTransfer, ?array $bcc): void;
 }

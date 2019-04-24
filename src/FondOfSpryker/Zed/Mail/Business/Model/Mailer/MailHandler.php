@@ -34,11 +34,11 @@ class MailHandler extends BaseMailHandler implements MailHandlerInterface
 
     /**
      * @param \Generated\Shared\Transfer\MailTransfer $mailTransfer
-     * @param string|null $bcc
+     * @param array|null $bcc
      *
      * @return mixed|void
      */
-    public function handleMailWithBcc(MailTransfer $mailTransfer, ?string $bcc)
+    public function handleMailWithBcc(MailTransfer $mailTransfer, ?array $bcc): void
     {
         $mailTypeName = $this->getMailTypeNameFromTransfer($mailTransfer);
 
@@ -50,11 +50,11 @@ class MailHandler extends BaseMailHandler implements MailHandlerInterface
 
     /**
      * @param \Generated\Shared\Transfer\MailTransfer $mailTransfer
-     * @param string|null $bcc
+     * @param array|null $bcc
      *
      * @return void
      */
-    protected function sendMailWithBcc(MailTransfer $mailTransfer, ?string $bcc)
+    protected function sendMailWithBcc(MailTransfer $mailTransfer, ?array $bcc)
     {
         $mailProviders = $this->getMailProviderByMailType($mailTransfer);
 

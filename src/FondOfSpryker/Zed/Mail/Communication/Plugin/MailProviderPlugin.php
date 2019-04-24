@@ -14,11 +14,11 @@ class MailProviderPlugin extends BaseMailProviderPlugin implements MailProviderP
 {
     /**
      * @param \Generated\Shared\Transfer\MailTransfer $mailTransfer
-     * @param string|null $bcc
+     * @param array|null $bcc
      *
-     * @return mixed
+     * @return void
      */
-    public function sendMailWithBcc(MailTransfer $mailTransfer, ?string $bcc)
+    public function sendMailWithBcc(MailTransfer $mailTransfer, ?array $bcc): void
     {
         $this->getFacade()->sendMailWithBcc($mailTransfer, $bcc);
     }

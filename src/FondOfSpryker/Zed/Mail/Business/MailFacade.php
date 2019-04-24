@@ -13,22 +13,22 @@ class MailFacade extends BaseMailFacade implements MailFacadeInterface
 {
     /**
      * @param \Generated\Shared\Transfer\MailTransfer $mailTransfer
-     * @param string|null $bbc
+     * @param array|null $bcc
      *
-     * @return mixed|void
+     * @return void
      */
-    public function handleMailWithBcc(MailTransfer $mailTransfer, ?string $bcc)
+    public function handleMailWithBcc(MailTransfer $mailTransfer, ?array $bcc): void
     {
         $this->getFactory()->createMailHandler()->handleMailWithBcc($mailTransfer, $bcc);
     }
 
     /**
      * @param \Generated\Shared\Transfer\MailTransfer $mailTransfer
-     * @param string|null $bcc
+     * @param string|null|array $bcc
      *
-     * @return mixed
+     * @return void
      */
-    public function sendMailWithBcc(MailTransfer $mailTransfer, ?string $bcc)
+    public function sendMailWithBcc(MailTransfer $mailTransfer, ?array $bcc): void
     {
         $this->getFactory()->createMailer()->sendMailWithBcc($mailTransfer, $bcc);
     }

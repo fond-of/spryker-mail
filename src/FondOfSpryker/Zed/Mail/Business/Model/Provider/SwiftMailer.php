@@ -22,32 +22,33 @@ class SwiftMailer extends BaseSwiftMailer implements MailProviderPluginInterface
 
     /**
      * @param \Generated\Shared\Transfer\MailTransfer $mailTransfer
-     * @param string|null $bcc
+     * @param string|null|array $bcc
      *
      * @return mixed|void
      */
-    public function sendMailWithBcc(MailTransfer $mailTransfer, ?string $bcc)
+    public function sendMailWithBcc(MailTransfer $mailTransfer, ?array $bcc): void
     {
         $this
             ->addSubject($mailTransfer)
             ->addFrom($mailTransfer)
             ->addTo($mailTransfer)
-            ->addContent($mailTransfer);
-
-        if (filter_var($bcc, \FILTER_VALIDATE_EMAIL)) {
-            $this->addBcc($bcc);
-        }
+            ->addContent($mailTransfer)
+            ->addBcc($bcc);
 
         $this->mailer->send();
     }
 
     /**
-     * @param string $bcc
+     * @param string|array $bcc
      *
      * @return void
      */
-    public function addBcc(string $bcc)
+    public function addBcc(array $bcc): void
     {
-        $this->mailer->addBcc($bcc, 'SYSTEM');
+        foreach ($bcc as $address => $name) {
+            if (filter_var($address, \FILTER_VALIDATE_EMAIL)) {
+                $this->mailer->addBcc($address, $name);
+            }
+        }
     }
 }

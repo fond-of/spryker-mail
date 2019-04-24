@@ -9,17 +9,17 @@ interface MailFacadeInterface extends BaseMailFacadeInterface
 {
     /**
      * @param \Generated\Shared\Transfer\MailTransfer $mailTransfer
-     * @param string|null $bbc
+     * @param array|null $bbc
      *
-     * @return mixed
+     * @return void
      */
-    public function handleMailWithBcc(MailTransfer $mailTransfer, ?string $bbc);
+    public function handleMailWithBcc(MailTransfer $mailTransfer, ?array $bbc): void;
 
     /**
      * @param \Generated\Shared\Transfer\MailTransfer $mailTransfer
-     * @param string|null $bcc
+     * @param array|null $bcc
      *
-     * @return mixed
+     * @return void
      */
-    public function sendMailWithBcc(MailTransfer $mailTransfer, ?string $bcc);
+    public function sendMailWithBcc(MailTransfer $mailTransfer, ?array $bcc): void;
 }
