@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace FondOfSpryker\Zed\Mail;
 
 use FondOfSpryker\Shared\Mail\MailConstants;
@@ -7,12 +9,15 @@ use Spryker\Zed\Mail\MailConfig as SprykerMailConfig;
 
 class MailConfig extends SprykerMailConfig
 {
+    protected const DEFAULT_SENDER_NAME = 'mail.sender.name';
+    protected const DEFAULT_SENDER_EMAIL = 'mail.sender.email';
+
     /**
      * @return string
      */
     public function getSenderName(): string
     {
-        return $this->get(MailConstants::MAIL_SENDER_NAME, 'mail.sender.name');
+        return $this->get(MailConstants::MAIL_SENDER_NAME, static::DEFAULT_SENDER_NAME);
     }
 
     /**
@@ -20,46 +25,54 @@ class MailConfig extends SprykerMailConfig
      */
     public function getSenderEmail(): string
     {
-        return $this->get(MailConstants::MAIL_SENDER_EMAIL, 'mail.sender.email');
+        return $this->get(MailConstants::MAIL_SENDER_EMAIL, static::DEFAULT_SENDER_EMAIL);
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getHost(): string
+    public function getUser(): ?string
     {
-        return $this->get(MailConstants::MAILER_SMTP_HOST, 'localhost');
+        if (!$this->getConfig()->hasValue(MailConstants::MAILER_SMTP_USER)) {
+            return null;
+        }
+
+        return $this->get(MailConstants::MAILER_SMTP_USER);
     }
 
     /**
-     * @return int
+     * @return string|null
      */
-    public function getPort(): string
+    public function getPassword(): ?string
     {
-        return $this->get(MailConstants::MAILER_SMTP_PORT, 25);
+        if (!$this->getConfig()->hasValue(MailConstants::MAILER_SMTP_PASSWORD)) {
+            return null;
+        }
+
+        return $this->get(MailConstants::MAILER_SMTP_PASSWORD);
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getUser(): string
+    public function getEncryption(): ?string
     {
-        return $this->get(MailConstants::MAILER_SMTP_USER, 'JohnDoe');
+        if (!$this->getConfig()->hasValue(MailConstants::MAILER_SMTP_ENCRYPTION)) {
+            return null;
+        }
+
+        return $this->get(MailConstants::MAILER_SMTP_ENCRYPTION);
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getPassword(): string
+    public function getAuthMode(): ?string
     {
-        return $this->get(MailConstants::MAILER_SMTP_PASSWORD, 'password');
-    }
+        if (!$this->getConfig()->hasValue(MailConstants::MAILER_SMTP_AUTH_MODE)) {
+            return null;
+        }
 
-    /**
-     * @return string
-     */
-    public function getEncryption(): string
-    {
-        return $this->get(MailConstants::MAILER_SMTP_ENCRYPTION, '');
+        return $this->get(MailConstants::MAILER_SMTP_AUTH_MODE);
     }
 }

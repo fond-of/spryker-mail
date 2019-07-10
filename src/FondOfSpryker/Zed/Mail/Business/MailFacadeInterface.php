@@ -1,25 +1,11 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace FondOfSpryker\Zed\Mail\Business;
 
-use Generated\Shared\Transfer\MailTransfer;
-use Spryker\Zed\Mail\Business\MailFacadeInterface as BaseMailFacadeInterface;
+use Spryker\Zed\Mail\Business\MailFacadeInterface as SprykerMailFacadeInterface;
 
-interface MailFacadeInterface extends BaseMailFacadeInterface
+interface MailFacadeInterface extends SprykerMailFacadeInterface
 {
-    /**
-     * @param \Generated\Shared\Transfer\MailTransfer $mailTransfer
-     * @param array|null $bbc
-     *
-     * @return void
-     */
-    public function handleMailWithBcc(MailTransfer $mailTransfer, ?array $bbc): void;
-
-    /**
-     * @param \Generated\Shared\Transfer\MailTransfer $mailTransfer
-     * @param array|null $bcc
-     *
-     * @return void
-     */
-    public function sendMailWithBcc(MailTransfer $mailTransfer, ?array $bcc): void;
 }

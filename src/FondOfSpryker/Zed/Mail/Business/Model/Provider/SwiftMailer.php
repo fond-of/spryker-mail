@@ -1,54 +1,67 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace FondOfSpryker\Zed\Mail\Business\Model\Provider;
 
-use FondOfSpryker\Zed\Mail\Dependency\Mailer\MailToMailerInterface;
-use FondOfSpryker\Zed\Mail\Dependency\Plugin\MailProviderPluginInterface;
 use Generated\Shared\Transfer\MailTransfer;
-use Spryker\Zed\Mail\Business\Model\Provider\SwiftMailer as BaseSwiftMailer;
+use Spryker\Zed\Mail\Business\Model\Provider\SwiftMailer as SprykerSwiftMailer;
 use Spryker\Zed\Mail\Business\Model\Renderer\RendererInterface;
+use FondOfSpryker\Zed\Mail\Dependency\Mailer\MailToMailerInterface;
 
-class SwiftMailer extends BaseSwiftMailer implements MailProviderPluginInterface
+use const FILTER_VALIDATE_EMAIL;
+
+use function is_string;
+use function filter_var;
+
+class SwiftMailer extends SprykerSwiftMailer
 {
+    /**
+     * @var \FondOfSpryker\Zed\Mail\Dependency\Mailer\MailToMailerInterface
+     */
+    protected $mailer;
+
     /**
      * @param \Spryker\Zed\Mail\Business\Model\Renderer\RendererInterface $renderer
      * @param \FondOfSpryker\Zed\Mail\Dependency\Mailer\MailToMailerInterface $mailer
+     *
      */
     public function __construct(RendererInterface $renderer, MailToMailerInterface $mailer)
     {
-        $this->renderer = $renderer;
-        $this->mailer = $mailer;
+        parent::__construct($renderer, $mailer);
     }
 
     /**
      * @param \Generated\Shared\Transfer\MailTransfer $mailTransfer
-     * @param string|null|array $bcc
-     *
-     * @return mixed|void
-     */
-    public function sendMailWithBcc(MailTransfer $mailTransfer, ?array $bcc): void
-    {
-        $this
-            ->addSubject($mailTransfer)
-            ->addFrom($mailTransfer)
-            ->addTo($mailTransfer)
-            ->addContent($mailTransfer)
-            ->addBcc($bcc);
-
-        $this->mailer->send();
-    }
-
-    /**
-     * @param string|array $bcc
      *
      * @return void
      */
-    public function addBcc(array $bcc): void
+    public function sendMail(MailTransfer $mailTransfer): void
     {
-        foreach ($bcc as $address => $name) {
-            if (filter_var($address, \FILTER_VALIDATE_EMAIL)) {
-                $this->mailer->addBcc($address, $name);
+        $this->addBcc($mailTransfer);
+        parent::sendMail($mailTransfer);
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\MailTransfer $mailTransfer
+     *
+     * @return \FondOfSpryker\Zed\Mail\Business\Model\Provider\SwiftMailer
+     */
+    protected function addBcc(MailTransfer $mailTransfer): SwiftMailer
+    {
+        foreach ($mailTransfer->getRecipientsBcc() as $recipientBccTransfer) {
+            if (!is_string($recipientBccTransfer->getEmail())) {
+                continue;
             }
+
+            $validMailOrFalse = filter_var($recipientBccTransfer->getEmail(), FILTER_VALIDATE_EMAIL);
+            if ($validMailOrFalse === false) {
+                continue;
+            }
+
+            $this->mailer->addBcc($validMailOrFalse, $recipientBccTransfer->getName());
         }
+
+        return $this;
     }
 }

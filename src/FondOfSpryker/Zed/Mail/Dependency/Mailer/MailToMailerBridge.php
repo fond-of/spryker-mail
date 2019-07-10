@@ -1,18 +1,20 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace FondOfSpryker\Zed\Mail\Dependency\Mailer;
 
-use Spryker\Zed\Mail\Dependency\Mailer\MailToMailerBridge as BaseMailToMailerBridge;
+use Spryker\Zed\Mail\Dependency\Mailer\MailToMailerBridge as SprykerMailToMailer;
 
-class MailToMailerBridge extends BaseMailToMailerBridge implements MailToMailerInterface
+class MailToMailerBridge extends SprykerMailToMailer implements MailToMailerInterface
 {
     /**
      * @param string $email
-     * @param string $name
+     * @param string|null $name
      *
      * @return void
      */
-    public function addBcc($email, $name)
+    public function addBcc(string $email, ?string $name = null): void
     {
         $this->message->addBcc($email, $name);
     }

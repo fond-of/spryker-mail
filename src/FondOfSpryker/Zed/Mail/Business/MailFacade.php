@@ -1,35 +1,15 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace FondOfSpryker\Zed\Mail\Business;
 
-use Generated\Shared\Transfer\MailTransfer;
-use Spryker\Zed\Mail\Business\MailFacade as BaseMailFacade;
+use Spryker\Zed\Mail\Business\MailFacade as SprykerMailFacade;
 
 /**
  * @method \FondOfSpryker\Zed\Mail\Business\MailFacadeInterface getFacade()
  * @method \FondOfSpryker\Zed\Mail\Business\MailBusinessFactory getFactory()
  */
-class MailFacade extends BaseMailFacade implements MailFacadeInterface
+class MailFacade extends SprykerMailFacade implements MailFacadeInterface
 {
-    /**
-     * @param \Generated\Shared\Transfer\MailTransfer $mailTransfer
-     * @param array|null $bcc
-     *
-     * @return void
-     */
-    public function handleMailWithBcc(MailTransfer $mailTransfer, ?array $bcc): void
-    {
-        $this->getFactory()->createMailHandler()->handleMailWithBcc($mailTransfer, $bcc);
-    }
-
-    /**
-     * @param \Generated\Shared\Transfer\MailTransfer $mailTransfer
-     * @param string|null|array $bcc
-     *
-     * @return void
-     */
-    public function sendMailWithBcc(MailTransfer $mailTransfer, ?array $bcc): void
-    {
-        $this->getFactory()->createMailer()->sendMailWithBcc($mailTransfer, $bcc);
-    }
 }

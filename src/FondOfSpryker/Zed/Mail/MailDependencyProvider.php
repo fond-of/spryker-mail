@@ -1,64 +1,58 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace FondOfSpryker\Zed\Mail;
 
-use FondOfSpryker\Zed\Mail\Business\Model\Provider\MailProviderCollection;
 use FondOfSpryker\Zed\Mail\Dependency\Mailer\MailToMailerBridge;
 use Spryker\Zed\Kernel\Container;
-use Spryker\Zed\Mail\MailDependencyProvider as SpykerMailDependencyProvider;
+use Spryker\Zed\Mail\MailDependencyProvider as SprykerMailDependencyProvider;
 use Swift_Mailer;
 use Swift_Message;
 use Swift_SmtpTransport;
 
 /**
- * Class MailDependencyProvider
- * @package FondOfSpryker\Zed\Mail
  * @method \FondOfSpryker\Zed\Mail\MailConfig getConfig()
  */
-class MailDependencyProvider extends SpykerMailDependencyProvider
+class MailDependencyProvider extends SprykerMailDependencyProvider
 {
     /**
      * @param \Spryker\Zed\Kernel\Container $container
      *
      * @return \Spryker\Zed\Kernel\Container
      */
-    protected function addMailProviderCollection(Container $container)
-    {
-        $container[static::MAIL_PROVIDER_COLLECTION] = function () {
-            $mailProviderCollection = $this->getMailProviderCollection();
-
-            return $mailProviderCollection;
-        };
-
-        return $container;
-    }
-
-    /**
-     * @return \Pyz\Zed\Mail\Business\Model\Provider\MailProviderCollectionAddInterface
-     */
-    protected function getMailProviderCollection()
-    {
-        return new MailProviderCollection();
-    }
-
-    /**
-     * @param \Spryker\Zed\Kernel\Container $container
-     *
-     * @return \Spryker\Zed\Kernel\Container
-     */
-    protected function addMailer(Container $container)
+    protected function addMailer(Container $container): Container
     {
         $container[static::MAILER] = function () {
-            $message = Swift_Message::newInstance();
-            $transport = (Swift_SmtpTransport::newInstance($this->getConfig()->getHost(), $this->getConfig()->getPort()))
-                ->setUsername($this->getConfig()->getUser())
-                ->setPassword($this->getConfig()->getPassword());
+            $transport = Swift_SmtpTransport::newInstance(
+                $this->getConfig()->getSmtpHost(),
+                $this->getConfig()->getSmtpPort()
+            );
 
-            $mailer = Swift_Mailer::newInstance($transport);
+            $user = $this->getConfig()->getUser();
+            if ($user !== null) {
+                $transport->setUsername($user);
+            }
 
-            $mailerBridge = new MailToMailerBridge($message, $mailer);
+            $password = $this->getConfig()->getPassword();
+            if ($password !== null) {
+                $transport->setPassword($password);
+            }
 
-            return $mailerBridge;
+            $encryption = $this->getConfig()->getEncryption();
+            if ($encryption !== null) {
+                $transport->setEncryption($encryption);
+            }
+
+            $authMode = $this->getConfig()->getAuthMode();
+            if ($authMode !== null) {
+                $transport->setAuthMode($authMode);
+            }
+
+            return new MailToMailerBridge(
+                new Swift_Message(),
+                new Swift_Mailer($transport)
+            );
         };
 
         return $container;

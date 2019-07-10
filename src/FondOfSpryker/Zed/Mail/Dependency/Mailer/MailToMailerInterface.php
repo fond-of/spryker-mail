@@ -1,16 +1,18 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace FondOfSpryker\Zed\Mail\Dependency\Mailer;
 
-use Spryker\Zed\Mail\Dependency\Mailer\MailToMailerInterface as BaseMailToMailerInterface;
+use Spryker\Zed\Mail\Dependency\Mailer\MailToMailerInterface as SprykerMailToMailerInterface;
 
-interface MailToMailerInterface extends BaseMailToMailerInterface
+interface MailToMailerInterface extends SprykerMailToMailerInterface
 {
     /**
      * @param string $email
-     * @param string $name
+     * @param string|null $name
      *
      * @return void
      */
-    public function addBcc($email, $name);
+    public function addBcc(string $email, ?string $name = null): void;
 }
