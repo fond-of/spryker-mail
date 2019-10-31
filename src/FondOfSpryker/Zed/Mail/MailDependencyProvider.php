@@ -24,7 +24,7 @@ class MailDependencyProvider extends SprykerMailDependencyProvider
     protected function addMailer(Container $container): Container
     {
         $container[static::MAILER] = function () {
-            $transport = Swift_SmtpTransport::newInstance(
+            $transport = new Swift_SmtpTransport(
                 $this->getConfig()->getSmtpHost(),
                 $this->getConfig()->getSmtpPort()
             );
