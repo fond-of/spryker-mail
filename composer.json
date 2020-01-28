@@ -21,8 +21,8 @@
     }
   ],
   "require": {
-    "php": ">=7.1",
-    "spryker/mail": "^4.1.1"
+    "php": ">=7.2",
+    "spryker/mail": "^4.2.0"
   },
   "require-dev": {
     "spryker/code-sniffer": "^0.14.7",
